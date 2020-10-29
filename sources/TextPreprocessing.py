@@ -9,6 +9,8 @@ from pymorphy2 import tokenizers
 
 from sources.TextData import TextData, readSentencesListFromInputText
 
+from pathlib import Path
+
 
 def getCompiledFromSentencesText(sentences):
     result_string = ''
@@ -131,6 +133,11 @@ def tokenizeTextData(texts, configurations = None):
 # Записывает/перезаписывает строку любой длины c переносами (data_str) в файл (filename)
 def writeStringToFile(data_str, filename, strict_utf8_encoding=False):
     try:
+        # fix shitty code
+        file_path = Path(filename).absolute()
+        if not file_path.is_file():
+            file_path.touch()
+        
         if(strict_utf8_encoding):
             with open(filename, 'w', encoding='utf-8') as out_text_file:
                 out_text_file.write(data_str)
